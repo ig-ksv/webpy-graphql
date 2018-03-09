@@ -1,0 +1,11 @@
+*.egg-info
+*.pot
+*.sqlite3
+*.pyc
+*.py[co]
+.tox/
+__pycache__
+venv/
+src/
+dist/
+build/

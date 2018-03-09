@@ -1,0 +1,22 @@
+language: python
+sudo: false
+python:
+- 2.7
+matrix:
+  fast_finish: true
+  include:
+  - python: pypy
+    env: TEST_ENV=webpy_graphql
+  - python: '2.7'
+    env: TEST_ENV=webpy_graphql
+install:
+- pip install -r requirements.txt
+script:
+- python  ./tests/test_graphqlview.py $TEST_ENV
+after_success:
+- coveralls
+deploy:
+  provider: pypi
+  user: igorkozintsev
+  on:
+    tags: true
