@@ -1,7 +1,8 @@
 WebPy-GraphQL
 =============
 
-[![Coverage Status](https://coveralls.io/repos/github/Igor-britecore/webpy-graphql/badge.svg?branch=master)](https://coveralls.io/github/Igor-britecore/webpy-graphql?branch=master)
+.. image:: https://travis-ci.org/Igor-britecore/webpy-graphql.svg?branch=master :target: https://travis-ci.org/Igor-britecore/webpy-graphql .. image:: https://coveralls.io/repos/github/Igor-britecore/webpy-graphql/badge.svg?branch=master    :target: https://coveralls.io/github/Igor-britecore/webpy-graphql?branch=master .. image:: https://badge.fury.io/py/WebPy-GraphQL.svg  :target: https://badge.fury.io/py/WebPy-GraphQL
+
 
 Adds GraphQL support to your WebPy application.
 
@@ -18,8 +19,8 @@ Just use the ``GraphQLView`` view from ``webpy_graphql``
 
     app = web.application(urls, globals())
 
-    class GQLGateway(BaseResponse):
-        view = GraphQLView('graphql', schema=GQLSchema, graphiql=True)
+    class GQLGateway:
+        view = GraphQLView(schema=GQLSchema, graphiql=True)
 
         def GET(self):
             return self.view.dispatch()
@@ -50,3 +51,4 @@ Supported options
    `Apollo-Client <http://dev.apollodata.com/core/network.html#query-batching>`__
    or
    `ReactRelayNetworkLayer <https://github.com/nodkz/react-relay-network-layer>`__)
+-  ``graphiql_temp_title``: Set template title for GraphiQL

@@ -1,7 +1,7 @@
 import web
 import os
 import sys
-sys.path.append('.')
+
 from webpy_graphql import GraphQLView
 from schema import Schema
 
@@ -24,6 +24,6 @@ def is_test():
     if 'TEST_ENV' in os.environ:
         return os.environ['TEST_ENV'] == 'webpy-graphql'
 
-if (not is_test()) and __name__ == "__main__":
+if __name__ == "__main__":
     app = create_app(graphiql=True)
     app.run()

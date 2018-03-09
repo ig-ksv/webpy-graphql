@@ -4,6 +4,9 @@
 *.pyc
 *.py[co]
 .tox/
+.coverage
+.coverage.*
+.cache
 __pycache__
 venv/
 src/

@@ -5,7 +5,8 @@ required_packages = [
     'werkzeug',
     'graphql-server-core>=1.0.dev',
     'graphql-core>=1.0',
-    'six'
+    'six',
+    'paste'
 ]
 
 setup(

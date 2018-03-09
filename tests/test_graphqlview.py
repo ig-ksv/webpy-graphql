@@ -347,8 +347,10 @@ class WebPyGraphqlTests(unittest.TestCase):
         r = self.testApp.post('/graphql',
                               params=jl(query='{test}'),
                               headers={'Content-Type': 'application/json'})
+        body = json.loads(r.body)[0]
         self.assertEqual(r.status, 200)
-        self.assertEqual(r.body, '[{"status":200,"id":null,"payload":{"data":{"test":"Hello World"}}}]')
+        self.assertEqual(body.get('id'), None)
+        self.assertEqual(body.get('payload'), {"data":{"test":"Hello World"}})
 
     @_set_params(batch=True)
     def test_batch_supports_post_json_query_with_json_variables(self):
@@ -359,8 +361,10 @@ class WebPyGraphqlTests(unittest.TestCase):
                                   variables=j(name="John")),
                               headers={'Content-Type': 'application/json'})
         self.assertEqual(r.status, 200)
-        # id=1
-        self.assertEqual(r.body, '[{"status":200,"id":null,"payload":{"data":{"test_args":"Hello John"}}}]')
+
+        body = json.loads(r.body)[0]
+        self.assertEqual(body.get('id'), None) # id=1
+        self.assertEqual(body.get('payload'), {"data":{"test_args":"Hello John"}})
 
     @_set_params(batch=True)
     def test_batch_allows_post_with_operation_name(self):
@@ -378,8 +382,11 @@ class WebPyGraphqlTests(unittest.TestCase):
                               operationName='helloWorld'),
                               headers={'Content-Type': 'application/json'})
         self.assertEqual(r.status, 200)
-        # id=1
-        self.assertEqual(r.body, '[{"status":200,"id":null,"payload":{"data":{"test_args":"Hello World","shared":"Hello Everyone"}}}]')
+
+        body = json.loads(r.body)[0]
+        self.assertEqual(body.get('id'), None) # id=1
+        self.assertEqual(body.get('payload'),
+                         {"data":{"test_args":"Hello World","shared":"Hello Everyone"}})
 
     @_set_params(graphiql=True, graphiql_temp_title="TestTitle")
     def test_template_title(self):
