@@ -33,12 +33,13 @@ class WebPyGraphqlTests(unittest.TestCase):
         self.middleware = []
         self.testApp = TestApp(app.wsgifunc(*self.middleware))
 
-    def test_main_page(self):
-        r = self.testApp.get('/graphql', params={'query': '{test}'})
-        self.assertEqual(r.status, 200)
-        self.assertEqual(r.body, '{"data":{"test":"Hello World"}}')
+    def tearDown(self):
+        create_app(batch=None,
+                   graphiql=False,
+                   graphiql_temp_title=None,
+                   context=None)
 
-    def test_with_query_para(self):
+    def test_main_page(self):
         r = self.testApp.get('/graphql', params={'query': '{test}'})
         self.assertEqual(r.status, 200)
         self.assertEqual(r.body, '{"data":{"test":"Hello World"}}')

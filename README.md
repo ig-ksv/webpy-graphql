@@ -15,17 +15,12 @@ urls = ("/graphql", "GQLGateway")
 
 app = web.application(urls, globals())
 
-class GQLGateway:
-    view = GraphQLView(schema=GQLSchema, graphiql=True)
-
-    def GET(self):
-        return self.view.dispatch()
-
-    def POST(self):
-        return self.view.dispatch()
+class GQLGateway(GraphQLView):
+    class GraphQLMeta:
+        schema=Schema
 ```
 
-This will add `/graphql`  endpoints to your app.
+This will add `/graphql`  endpoints to your app (GET and POST methods implemented in the class GraphQLView).
 
 ### Supported options
  * `schema`: The `GraphQLSchema` object that you want the view to execute when it gets a valid request.

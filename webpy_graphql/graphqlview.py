@@ -5,8 +5,11 @@ import re
 import os
 import urlparse
 
+
 from werkzeug.exceptions import BadRequest, MethodNotAllowed
 from urllib import unquote
+from utils import props
+from init_subclass_meta import InitSubclassMeta
 
 from graphql import Source, execute, parse, validate
 from graphql.error import format_error as format_graphql_error
@@ -41,6 +44,8 @@ class HttpError(Exception):
 
 
 class GraphQLView:
+    __metaclass__ = InitSubclassMeta
+
     schema = None
     executor = None
     root_value = None
@@ -53,8 +58,8 @@ class GraphQLView:
     graphiql_temp_title = "GraphQL"
 
     def __init__(self, *args, **kwargs):
-        for key, value in kwargs.iteritems():
-            if hasattr(self, key):
+        if hasattr(self, 'GraphQLMeta'):
+            for key, value in props(self.GraphQLMeta).iteritems():
                 setattr(self, key, value)
 
         assert not all((self.graphiql, self.batch)), 'Use either graphiql or batch processing'
@@ -214,9 +219,7 @@ class GraphQLView:
             return dict(urlparse.parse_qsl(web.data()))
 
         elif content_type == 'multipart/form-data':
-            print web.input()
             return web.data()
-            # return dict(urlparse.parse_qsl(web.data()))
 
         return {}
 
@@ -242,6 +245,12 @@ class GraphQLView:
                 raise HttpError(BadRequest('Variables are invalid JSON.'))
 
         return query, variables, operation_name, id
+
+    def GET(self):
+        return self.dispatch()
+
+    def POST(self):
+        return self.dispatch()
 
     @staticmethod
     def check_data_underfiend(param, data):

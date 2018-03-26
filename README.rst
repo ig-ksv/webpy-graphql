@@ -19,16 +19,11 @@ Just use the ``GraphQLView`` view from ``webpy_graphql``
 
     app = web.application(urls, globals())
 
-    class GQLGateway:
-        view = GraphQLView(schema=GQLSchema, graphiql=True)
+    class GQLGateway(GraphQLView):
+        class GraphQLMeta:
+            schema=Schema
 
-        def GET(self):
-            return self.view.dispatch()
-
-        def POST(self):
-            return self.view.dispatch()
-
-This will add ``/graphql``  endpoints to your app.
+This will add ``/graphql``  endpoints to your app (GET and POST methods implemented in the class GraphQLView).
 
 Supported options
 ~~~~~~~~~~~~~~~~~
